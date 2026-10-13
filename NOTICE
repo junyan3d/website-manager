@@ -1,0 +1,12 @@
+Website Manager / 网站管家
+Copyright 2026 Website Manager Contributors
+
+Application-owned code is licensed under Apache-2.0.
+This distribution includes an adapted Hux Blog theme (Apache-2.0), which
+includes Clean Blog components (MIT). Original copyright and license notices
+are preserved under template/LICENSE and LICENSES/.
+
+The adaptation adds an anonymous website template, structured content editing,
+project/media management, avatar selection, local preview, recovery, GitHub
+publication safeguards and remote synchronization.
+Third-party components retain their own licenses; see LICENSES/THIRD-PARTY.md.

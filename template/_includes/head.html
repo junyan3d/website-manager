@@ -1,0 +1,11 @@
+<!-- Adapted for Website Manager by Website Manager Contributors (2026); original notices retained. -->
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% if page.title %}{{ page.title | escape }} · {% endif %}{{ site.SEOTitle | escape }}</title>
+<meta name="description" content="{{ page.description | default: site.description | escape }}">
+<meta name="theme-color" content="#173a3c">
+<link rel="icon" href="{{ '/assets/favicon.svg' | relative_url }}" type="image/svg+xml">
+<link rel="stylesheet" href="{{ '/css/bootstrap.min.css' | relative_url }}">
+<link rel="stylesheet" href="{{ '/css/hux-blog.min.css' | relative_url }}">
+<link rel="stylesheet" href="{{ '/css/personal.css' | relative_url }}">
+</head>

@@ -1,0 +1,10 @@
+---
+layout: page
+header-img: assets/covers/works.webp
+title: 作品
+description: "从学习到实践，关于形态、材质与动态的探索。"
+permalink: /works/
+---
+<!-- Adapted for Website Manager (2026); original theme notices retained. -->
+<nav class="work-tabs floating-work-tabs" aria-label="作品分类">{% for category in site.data.categories %}<a href="#{{ category.id }}" aria-label="查看{{ category.name }}作品">{{ category.name }}</a>{% endfor %}</nav>
+{% assign categories = site.data.categories %}{% assign projects = site.projects | sort: 'order' %}{% for item in categories %}{% assign cat = item %}<section class="work-section" id="{{ cat.id }}"><div class="section-heading"><p class="eyebrow">PORTFOLIO / {{ forloop.index | prepend: '0' }}</p><h2>{{ cat.name }}</h2></div><div class="work-grid">{% for project in projects %}{% if project.category == cat.name %}<a class="work-card" href="{{ project.url | relative_url }}"><div class="work-image"><img src="{{ project.cover | relative_url }}" alt="{{ project.title | escape }}" loading="lazy"><span>查看项目 ↗</span></div><h3>{{ project.title }}</h3><p>{{ project.description }}</p></a>{% endif %}{% endfor %}</div></section>{% endfor %}

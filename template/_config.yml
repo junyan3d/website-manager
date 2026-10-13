@@ -1,0 +1,31 @@
+title: 我的网站
+SEOTitle: 我的网站 · 设计与记录
+email: ''
+avatar: ''
+description: "关于形态、光影与设计的持续探索。"
+keyword: '作品集,设计,记录'
+url: ''
+baseurl: ""
+header-img: assets/covers/home-v2.webp
+intro: 这里展示我的作品，也记录创作过程。
+timezone: Asia/Shanghai
+markdown: kramdown
+highlighter: rouge
+permalink: /blog/:year/:month/:day/:title/
+paginate: 6
+paginate_path: /page/:num/
+plugins: [jekyll-paginate]
+collections:
+  projects:
+    output: true
+    permalink: /works/:name/
+defaults:
+  - scope:
+      path: ""
+      type: projects
+    values:
+      layout: project
+      header-img: assets/covers/works.webp
+exclude: [AGENTS.md, .DS_Store, local-archive, vendor, scripts, README.md, Gemfile, Gemfile.lock, less, .bundle, SOURCE.md]
+service-worker: false
+social_links: []

@@ -1,0 +1,64 @@
+name: Apple Silicon test installer
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package:
+    if: github.event.repository.private == true
+    runs-on: macos-15
+    defaults:
+      run:
+        working-directory: /tmp/website-studio-build
+    env:
+      PRIVATE_BUILD_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use anonymous build directory
+        working-directory: ${{ github.workspace }}
+        run: |
+          mkdir -p /tmp/website-studio-build
+          tar --exclude=.git -cf - . | tar -C /tmp/website-studio-build -xf -
+      - name: Check Apple Silicon
+        run: test "$(uname -m)" = arm64
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node node_modules/electron/install.js
+      - name: Compute runtime cache key
+        id: runtime-key
+        run: node scripts/runtime-key.mjs
+      - uses: actions/cache/restore@v4
+        id: runtime
+        with:
+          path: /tmp/website-studio-build/runtime
+          key: ${{ steps.runtime-key.outputs.key }}
+      - run: bash scripts/download-runtime.sh
+      - if: steps.runtime.outputs.cache-hit != 'true'
+        run: bash scripts/build-runtime.sh
+      - if: steps.runtime.outputs.cache-hit != 'true'
+        run: bash scripts/build-tools.sh
+      - if: steps.runtime.outputs.cache-hit != 'true'
+        run: bash scripts/install-gems.sh
+      - uses: actions/cache/save@v4
+        if: steps.runtime.outputs.cache-hit != 'true'
+        with:
+          path: /tmp/website-studio-build/runtime
+          key: ${{ steps.runtime-key.outputs.key }}
+      - run: npm test && npm run build
+      - run: node scripts/smoke.mjs && node scripts/acceptance.mjs
+      - run: npm run dist
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - run: TEST_APP="$PWD/release/mac-arm64/网站管家.app" node scripts/acceptance.mjs
+      - run: PRIVATE_BUILD_REPO="$PRIVATE_BUILD_REPO" node scripts/audit-package.mjs release/mac-arm64/网站管家.app
+      - run: python3 scripts/collect-third-party-sources.py
+      - run: bash scripts/package-extras.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: website-manager-apple-silicon-0.1.0
+          path: |
+            /tmp/website-studio-build/release/分享包-0.1.0/
+          retention-days: 14

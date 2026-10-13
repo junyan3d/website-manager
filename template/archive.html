@@ -1,0 +1,10 @@
+---
+layout: page
+header-img: assets/covers/archive.webp
+title: 归档
+description: "让每一次探索，都留下痕迹。"
+permalink: /archive/
+---
+<!-- Adapted for Website Manager (2026); original theme notices retained. -->
+<div class="tags archive-tags"><a href="{{ '/archive/' | relative_url }}" data-tag="">全部</a>{% for tag in site.tags %}<a href="?tag={{ tag[0] | url_encode }}" data-tag="{{ tag[0] | escape }}">{{ tag[0] }} <small>{{ tag[1].size }}</small></a>{% endfor %}</div><p id="filter-status" role="status"></p>
+{% for post in site.posts %}{% assign year = post.date | date: '%Y' %}{% if year != previous_year %}<h2 class="archive-year">{{ year }}</h2>{% assign previous_year = year %}{% endif %}<article class="archive-item" data-tags="{{ post.tags | jsonify | escape }}"><time>{{ post.date | date: '%m.%d' }}</time><a href="{{ post.url | relative_url }}">{{ post.title }}</a></article>{% else %}<p>还没有文章。</p>{% endfor %}

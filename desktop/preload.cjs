@@ -1,0 +1,1 @@
+const {contextBridge,ipcRenderer}=require('electron');contextBridge.exposeInMainWorld('desktop',{createProject:data=>ipcRenderer.invoke('create-project',data),chooseProject:()=>ipcRenderer.invoke('choose-project'),recentProject:()=>ipcRenderer.invoke('recent-project'),openRecent:()=>ipcRenderer.invoke('open-recent')});

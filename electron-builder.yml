@@ -1,0 +1,42 @@
+appId: local.website.studio
+productName: 网站管家
+asar: false
+publish: null
+electronDist: node_modules/electron/dist
+directories:
+  output: release
+files:
+  - desktop/**
+  - server/**
+  - dist/**
+  - package.json
+  - LICENSE
+  - NOTICE
+  - '!server/*.test.js'
+  - '!desktop/*.test.cjs'
+  - '!**/.DS_Store'
+  - '!**/.eslintcache'
+  - '!**/node_modules/*/test/**'
+  - '!**/node_modules/*/tests/**'
+  - '!**/node_modules/*/__tests__/**'
+extraResources:
+  - from: .build/package/runtime
+    to: runtime
+  - from: template
+    to: template
+  - from: .build/package/LICENSES
+    to: LICENSES
+  - from: docs
+    to: docs
+mac:
+  target:
+    - target: dir
+      arch: arm64
+    - target: dmg
+      arch: arm64
+  category: public.app-category.productivity
+  icon: desktop/icon.icns
+  minimumSystemVersion: '14.0'
+  identity: null
+dmg:
+  title: 网站管家 Apple Silicon

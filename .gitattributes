@@ -1,0 +1,5 @@
+LICENSES/** -diff
+template/fonts/** -diff
+*.png binary
+*.webp binary
+*.icns binary

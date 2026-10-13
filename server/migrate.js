@@ -1,0 +1,14 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import YAML from 'yaml';
+import {readDoc,atomic,docWrite,profileFromAbout} from './core.js';
+export async function migrate(site,state,touch){const marker=path.join(state,'migration-v1.json');try{await fs.access(marker);return;}catch{}
+ const stamp=new Date().toISOString().replace(/[:.]/g,'-'),backup=path.join(state,'backups','initial-'+stamp);await fs.mkdir(backup,{recursive:true});
+ for(const name of await fs.readdir(site)){if(['.git','vendor','_site','.bundle','.jekyll-cache','.jekyll-metadata','.DS_Store'].includes(name))continue;await fs.cp(path.join(site,name),path.join(backup,name),{recursive:true});}
+ try{await fs.access(path.join(site,'_data/profile.yml'));await fs.access(path.join(site,'_data/categories.yml'));await atomic(marker,JSON.stringify({backup,completedAt:new Date().toISOString(),adoptedExistingData:true},null,2));return;}catch{}
+ const about=await readDoc(path.join(site,'about.md'));const profile=profileFromAbout(about);
+ await touch('_data/profile.yml',YAML.stringify(profile,{lineWidth:0}));await touch('_data/categories.yml',YAML.stringify([{id:'work',name:'工作'},{id:'master',name:'硕士'},{id:'bachelor',name:'本科'}]));
+ const template=`<p class="eyebrow">{{ site.data.profile.eyebrow | escape }}</p>\n<h2>{{ site.data.profile.heading | escape }}</h2>\n{{ site.data.profile.intro | markdownify }}\n<h3>工作经历</h3>\n{% for entry in site.data.profile.work %}<p><strong>{{ entry.title | escape }}</strong> <span class="timeline-date">{{ entry.date | escape }}</span></p>{{ entry.detail | markdownify }}{% endfor %}\n<h3>教育经历</h3>\n{% for entry in site.data.profile.education %}<p><strong>{{ entry.title | escape }}</strong> <span class="timeline-date">{{ entry.date | escape }}</span></p>{{ entry.detail | markdownify }}{% endfor %}\n<h3>研究与技能</h3>\n{{ site.data.profile.skills | markdownify }}\n<h3>工作之外</h3>\n{{ site.data.profile.interests | markdownify }}\n<h3>联系我</h3>\n<p><a href="mailto:{{ site.email | escape }}">{{ site.email | escape }}</a></p>\n`;
+ await touch('about.md',docWrite(about.data,template));let works=await fs.readFile(path.join(site,'works.html'),'utf8');works=works.replace(/<nav class="work-tabs[\s\S]*?<\/nav>/,`<nav class="work-tabs floating-work-tabs" aria-label="作品分类">{% for category in site.data.categories %}<a href="#{{ category.id }}" aria-label="查看{{ category.name }}作品">{{ category.name }}</a>{% endfor %}</nav>`).replace("{% assign categories = '工作:work,硕士:master,本科:bachelor' | split: ',' %}","{% assign categories = site.data.categories %}").replace("{% assign cat = item | split: ':' %}","{% assign cat = item %}").replaceAll('cat[1]','cat.id').replaceAll('cat[0]','cat.name');await touch('works.html',works);
+ await atomic(marker,JSON.stringify({backup,completedAt:new Date().toISOString()},null,2));
+}

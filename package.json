@@ -1,0 +1,41 @@
+{
+  "name": "site-manager-share",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "start": "electron .",
+    "test": "node --test server/*.test.js desktop/*.test.cjs scripts/package.test.mjs",
+    "pack": "electron-builder --mac dir --arm64 --publish never",
+    "dist": "electron-builder --mac dmg --arm64 --publish never",
+    "acceptance": "node scripts/smoke.mjs && node scripts/acceptance.mjs",
+    "prepack": "node scripts/prepare-package.mjs",
+    "predist": "node scripts/prepare-package.mjs"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "gray-matter": "^4.0.3",
+    "marked": "^16.0.0",
+    "multer": "^2.0.2",
+    "pinyin-pro": "^3.27.0",
+    "sanitize-html": "^2.17.0",
+    "sharp": "^0.34.0",
+    "turndown": "^7.2.0",
+    "yaml": "^2.8.0"
+  },
+  "main": "desktop/main.cjs",
+  "devDependencies": {
+    "electron": "^44.7.0",
+    "electron-builder": "^26.15.3",
+    "@tiptap/extension-image": "^3.0.0",
+    "@tiptap/react": "^3.0.0",
+    "@tiptap/starter-kit": "^3.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "vite": "^7.0.0"
+  },
+  "description": "Apple Silicon Mac 本地网站内容管理器",
+  "author": "Website Manager Contributors",
+  "license": "Apache-2.0"
+}

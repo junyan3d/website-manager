@@ -1,0 +1,5 @@
+<!-- Adapted for Website Manager by Website Manager Contributors (2026); original notices retained. -->
+---
+layout: default
+---
+{% include hero.html label='THE JOURNAL / 设计记录' %}<main id="main" class="content-wrap article-body prose"><div class="article-meta">{{ page.date | date: '%Y.%m.%d' }} · {{ site.title }}{% for tag in page.tags %} · <a href="{{ '/archive/' | relative_url }}?tag={{ tag | url_encode }}">{{ tag }}</a>{% endfor %}</div>{{ content }}<nav class="article-bottom"><a href="{{ '/' | relative_url }}">← 返回首页</a>{% if page.previous %}<a href="{{ page.previous.url | relative_url }}">{{ page.previous.title }} →</a>{% endif %}</nav></main>

@@ -1,0 +1,4 @@
+<!-- Adapted for Website Manager by Website Manager Contributors (2026); original notices retained. -->
+<nav class="personal-nav" aria-label="主导航"><a class="brand" href="{{ '/' | relative_url }}">{{ site.title | escape }}<span> / DESIGN JOURNAL</span></a>
+<button class="menu-button" aria-expanded="false" aria-controls="navigation">菜单 ☰</button>
+<div id="navigation">{% assign links = '首页:/,作品:/works/,归档:/archive/,关于:/about/' | split: ',' %}{% for link in links %}{% assign pair = link | split: ':' %}<a href="{{ pair[1] | relative_url }}" {% if page.url == pair[1] %}aria-current="page"{% endif %}>{{ pair[0] }}</a>{% endfor %}</div></nav>
