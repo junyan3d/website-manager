@@ -23,3 +23,7 @@ Electron 44.7.0 的 DEPS 固定 Chromium 152.0.7977.130 和 Node 24.21.0。附�
 按 Electron 官方构建文档初始化固定 DEPS；Chromium FFmpeg 平台配置位于源码 chromium/config，Electron patches/ffmpeg 是额外修改记录。生成的 libffmpeg.dylib 可替换 Electron Framework.framework/Versions/A/Libraries 下同名库。其他公开组件的许可与来源见 Chromium-LICENSES.html。
 
 应用未签名、未公证，不通过签名或私有协议阻止这些组件替换。自行替换之后仍需进行功能和安全检查，不要关闭系统安全保护。
+
+Chromium Gitiles 的源码归档会重复生成 gzip/tar 时间与所有者元数据。
+收集脚本仅规范化这些元数据并按路径排序；所有文件路径、模式、链接和源码字节均保留，
+规范化后的 SHA-256 固定在清单中，拒绝任何源码内容变化。
